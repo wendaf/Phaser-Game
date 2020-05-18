@@ -24,7 +24,6 @@ const credits = new Credits();
 // Our game Object
 const game = new Phaser.Game(config);
 
-
 game.globals = { model, bgMusic: null };
 
 // load scenes
