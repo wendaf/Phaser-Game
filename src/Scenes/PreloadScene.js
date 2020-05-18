@@ -4,10 +4,6 @@ export default class PreloadScene extends Phaser.Scene {
         super('PreloadScene');
     }
 
-    init () {
-        this.readyCount = 0;
-    }
-
     preload() {
         // add logo image
         this.add.image(400, 150, 'logo');
@@ -79,30 +75,27 @@ export default class PreloadScene extends Phaser.Scene {
         this.timedEvent = this.time.delayedCall(3000, this.ready, [], this);
 
         // Any Assets you want to load in
-        this.load.image('background', 'assets/tut/background.png');
-        this.load.image('player', 'assets/tut/warrior.png');
-        this.load.image('dragon', 'assets/tut/pet_dragon_new.png');
-        this.load.image('gold', 'assets/tut/icon.png');
         this.load.image('blueButton1', 'assets/ui/blue_button02.png');
         this.load.image('blueButton2', 'assets/ui/blue_button03.png');
         this.load.image('phaserLogo', 'assets/logo.png');
         this.load.image('box', 'assets/ui/grey_box.png');
         this.load.image('checkedBox', 'assets/ui/blue_boxCheckmark.png');
-        this.load.audio('bgMusic', ['assets/Music.mp3']);
+        this.load.audio('bgMusic', ['assets/audio/music.mp3']);
+        // map made with Tiled in JSON format
+        this.load.tilemapTiledJSON('map', 'assets/game/map.json');
+        // tiles in spritesheet
+        this.load.spritesheet('tiles', 'assets/game/tiles.png', {frameWidth: 70, frameHeight: 70});
+        // simple coin image
+        this.load.image('coin', 'assets/game/coinGold.png');
+        // player animations
+        this.load.atlas('player', 'assets/game/player.png', 'assets/game/player.json');
+        // audio game
+        this.load.audio('gameMusic', ['assets/audio/game.mp3']);
     }
 
 
     ready() {
         this.scene.start('TitleScene');
-        this.readyCount++;
-        if (this.readyCount === 2) {
-            this.scene.start('TitleScene');
-        }
-        this.scene.start("TitleScene");
-    }
-
-    create() {
-
     }
 
 }
