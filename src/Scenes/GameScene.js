@@ -47,6 +47,32 @@ export default class GameScene extends Phaser.Scene {
         this.player.setBounce(0.2); // our player will bounce from items
         this.player.setCollideWorldBounds(true); // don't go out of the map
 
+        // Enemy 1
+        this.spawnEnemy1 = this.map.findObject("Objects", obj => obj.name === "Enemy 1");
+        this.enemy1 = this.physics.add.sprite(this.spawnEnemy1.x, this.spawnEnemy1.y, 'enemy1');
+        this.enemy1.setCollideWorldBounds(true);
+        this.physics.add.collider(this.groundLayer, this.enemy1);
+        this.enemy1X = this.map.findObject("Objects", obj => obj.name === "Limit 1_0");
+        this.tween1 = this.tweens.add({
+            targets: this.enemy1,
+            props: {
+                x: this.enemy1X.x,
+            },
+            ease: 'Power1',
+            duration: 5000,
+            autoStart: true,
+            delay: 0,
+            repeat: -1,
+            yoyo: true
+        });
+
+        this.anims.create({
+            key: 'walk_enemie1',
+            frames: this.anims.generateFrameNames('player', { prefix: 'p1_walk', start: 1, end: 11, zeroPad: 2 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
         // small fix to our player images, we resize the physics body object slightly
         this.player.body.setSize(this.player.width, this.player.height - 8);
 
@@ -113,7 +139,7 @@ export default class GameScene extends Phaser.Scene {
             this.player.anims.play('idle', true);
         }
         // jump
-        if (this.cursors.up.isDown && this.player.body.onFloor()) {
+        if (this.cursors.up.isDown) {
             this.player.body.setVelocityY(-500);
         }
     }

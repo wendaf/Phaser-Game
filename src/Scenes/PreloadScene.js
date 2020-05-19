@@ -81,6 +81,8 @@ export default class PreloadScene extends Phaser.Scene {
         this.load.image('box', 'assets/ui/grey_box.png');
         this.load.image('checkedBox', 'assets/ui/blue_boxCheckmark.png');
         this.load.audio('bgMusic', ['assets/audio/music.mp3']);
+        // audio game
+        this.load.audio('gameMusic', ['assets/audio/game.mp3']);
         // map made with Tiled in JSON format
         this.load.tilemapTiledJSON('map', 'assets/game/map.json');
         // tiles in spritesheet
@@ -89,8 +91,8 @@ export default class PreloadScene extends Phaser.Scene {
         this.load.image('coin', 'assets/game/coinGold.png');
         // player animations
         this.load.atlas('player', 'assets/game/player.png', 'assets/game/player.json');
-        // audio game
-        this.load.audio('gameMusic', ['assets/audio/game.mp3']);
+        // enemy 1
+        this.load.spritesheet("enemy1", 'assets/game/slime-spritesheet.png', {frameWidth: 32, frameHeight: 32});
     }
 
 
