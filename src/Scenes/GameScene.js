@@ -9,6 +9,7 @@ export default class GameScene extends Phaser.Scene {
 
     init() {
         this.score = 0;
+        this.life = 5;
         this.sys.game.globals.bgMusic.stop();
         this.model = this.sys.game.globals.model;
         this.model.bgMusicPlaying = false;
@@ -47,36 +48,37 @@ export default class GameScene extends Phaser.Scene {
         this.player.setBounce(0.2); // our player will bounce from items
         this.player.setCollideWorldBounds(true); // don't go out of the map
 
-        // Enemy 1
-        this.spawnEnemy1 = this.map.findObject("Objects", obj => obj.name === "Enemy 1");
-        this.enemy1 = this.physics.add.sprite(this.spawnEnemy1.x, this.spawnEnemy1.y, 'enemy1');
-        this.enemy1.setCollideWorldBounds(true);
-        this.physics.add.collider(this.groundLayer, this.enemy1);
-        this.enemy1X = this.map.findObject("Objects", obj => obj.name === "Limit 1_0");
-        this.tween1 = this.tweens.add({
-            targets: this.enemy1,
-            props: {
-                x: this.enemy1X.x,
-            },
-            ease: 'Power1',
-            duration: 5000,
-            autoStart: true,
-            delay: 0,
-            repeat: -1,
-            yoyo: true
-        });
-
-        this.anims.create({
-            key: 'walk_enemie1',
-            frames: this.anims.generateFrameNames('player', { prefix: 'p1_walk', start: 1, end: 11, zeroPad: 2 }),
-            frameRate: 10,
-            repeat: -1
-        });
-
         // small fix to our player images, we resize the physics body object slightly
         this.player.body.setSize(this.player.width, this.player.height - 8);
 
         this.physics.add.collider(this.groundLayer, this.player);
+
+        // Enemy 1
+        this.spawnEnemy1 = this.map.findObject("Objects", obj => obj.name === "Enemy 1");
+        this.enemy1 = this.physics.add.sprite(this.spawnEnemy1.x, this.spawnEnemy1.y, 'enemy1');
+        this.enemy1.setCollideWorldBounds(true);
+        this.enemy1.setScale(1.5);
+        this.physics.add.collider(this.groundLayer, this.enemy1);
+        this.enemy1X = this.map.findObject("Objects", obj => obj.name === "Limit 1_0");
+        this.tweens.add({
+            targets: this.enemy1,
+            props: {
+                x: this.enemy1X.x,
+            },
+            duration: 5000,
+            autoStart: true,
+            delay: 0,
+            repeat: -1,
+            yoyo: true,
+            flipX: true,
+        });
+        this.anims.create({
+            key: 'walk_enemie1',
+            frames: this.anims.generateFrameNumbers('enemy1', { start: 4, end: 7 }),
+            frameRate: 10,
+            repeat: -1,
+        });
+        this.enemy1.anims.play('walk_enemie1', true); // play walk animation
 
         this.coinLayer.setTileIndexCallback(17, this.collectCoin, this);
         // when the player overlaps with a tile with index 17, collectCoin
@@ -108,19 +110,26 @@ export default class GameScene extends Phaser.Scene {
         this.cameras.main.setBackgroundColor('#ccccff');
 
         // this text will show the score
-        this.text = this.add.text(20, 570, '0', {
+        this.textS = this.add.text(20, 570, 'SCORE : '+this.score, {
             fontSize: '20px',
             fill: '#ffffff'
         });
         // fix the text to the camera
-        this.text.setScrollFactor(0);
+        this.textS.setScrollFactor(0);
+        // this text will show the score
+        this.textL = this.add.text(20, 540, 'VIES : '+this.life, {
+            fontSize: '20px',
+            fill: '#ffffff'
+        });
+        // fix the text to the camera
+        this.textL.setScrollFactor(0);
     }
 
     // this function will be called when the player touches a coin
     collectCoin(sprite, tile) {
         this.coinLayer.removeTileAt(tile.x, tile.y); // remove the tile/coin
         this.score++// add 10 points to the score
-        this.text.setText(this.score); // set the text to show the current score
+        this.textS.setText('SCORE : '+this.score); // set the text to show the current score
         return false;
     }
 
@@ -142,11 +151,32 @@ export default class GameScene extends Phaser.Scene {
         if (this.cursors.up.isDown) {
             this.player.body.setVelocityY(-500);
         }
+        this.physics.collide(this.player, this.enemy1, this.lifeReduce, false, this);
+        if(this.life === 0 ) {
+            this.end();
+        }
+    }
+    lifeReduce()
+    {
+        this.life -= 1;
+        this.textL.setText('VIES : '+this.life);
+        if(this.player.x >= this.enemy1.x)
+        {
+            this.player.x +=75;
+        }
+        else
+        {
+            this.player.x -=75;
+        }
     }
 
 
     end() {
 
+        // Restart the scene
+        this.registry.destroy();
+        this.events.off();
+        this.scene.restart();
     }
 
 }
