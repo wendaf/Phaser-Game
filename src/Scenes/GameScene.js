@@ -42,7 +42,8 @@ export default class GameScene extends Phaser.Scene {
         this.physics.world.bounds.height = this.groundLayer.height;
 
         // create the player sprite
-        this.player = this.physics.add.sprite(200, 200, 'player');
+        this.spawnPoint = this.map.findObject("Objects", obj => obj.name === "Spawn Point");
+        this.player = this.physics.add.sprite(this.spawnPoint.x, this.spawnPoint.y, 'player');
         this.player.setBounce(0.2); // our player will bounce from items
         this.player.setCollideWorldBounds(true); // don't go out of the map
 
