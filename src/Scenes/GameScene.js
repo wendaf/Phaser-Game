@@ -13,7 +13,7 @@ export default class GameScene extends Phaser.Scene {
         this.model = this.sys.game.globals.model;
         this.model.bgMusicPlaying = false;
         if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
-            this.bgMusic = this.sound.add('gameMusic', {volume: 0.5, loop: true});
+            this.bgMusic = this.sound.add('gameMusic', { volume: 0.5, loop: true });
             this.bgMusic.play();
             this.model.bgMusicPlaying = true;
             this.sys.game.globals.bgMusic = this.bgMusic;
@@ -23,7 +23,7 @@ export default class GameScene extends Phaser.Scene {
     create() {
 
         // load the map
-        this.map = this.make.tilemap({key: 'map'});
+        this.map = this.make.tilemap({ key: 'map' });
 
         // tiles for the ground layer
         const groundTiles = this.map.addTilesetImage('tiles');
@@ -48,7 +48,7 @@ export default class GameScene extends Phaser.Scene {
         this.player.setCollideWorldBounds(true); // don't go out of the map
 
         // small fix to our player images, we resize the physics body object slightly
-        this.player.body.setSize(this.player.width, this.player.height-8);
+        this.player.body.setSize(this.player.width, this.player.height - 8);
 
         this.physics.add.collider(this.groundLayer, this.player);
 
@@ -67,7 +67,7 @@ export default class GameScene extends Phaser.Scene {
         // idle with only one frame, so repeat is not neaded
         this.anims.create({
             key: 'idle',
-            frames: [{key: 'player', frame: 'p1_stand'}],
+            frames: [{ key: 'player', frame: 'p1_stand' }],
             frameRate: 10,
         });
 
@@ -99,14 +99,12 @@ export default class GameScene extends Phaser.Scene {
     }
 
     update(time, delta) {
-        if (this.cursors.left.isDown)
-        {
+        if (this.cursors.left.isDown) {
             this.player.body.setVelocityX(-200); // move left
             this.player.anims.play('walk', true); // play walk animation
-            this.player.flipX= true; // flip the sprite to the left
+            this.player.flipX = true; // flip the sprite to the left
         }
-        else if (this.cursors.right.isDown)
-        {
+        else if (this.cursors.right.isDown) {
             this.player.body.setVelocityX(200); // move right
             this.player.anims.play('walk', true); // play walk animatio
             this.player.flipX = false; // use the original sprite looking to the right
@@ -115,8 +113,7 @@ export default class GameScene extends Phaser.Scene {
             this.player.anims.play('idle', true);
         }
         // jump
-        if (this.cursors.up.isDown && this.player.body.onFloor())
-        {
+        if (this.cursors.up.isDown && this.player.body.onFloor()) {
             this.player.body.setVelocityY(-500);
         }
     }
