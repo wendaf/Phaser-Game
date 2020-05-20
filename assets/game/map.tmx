@@ -157,16 +157,16 @@
   <object id="32" name="Spawn Point" x="37.075" y="5068.36">
    <point/>
   </object>
-  <object id="35" name="Enemy 1" x="1586" y="2920">
+  <object id="35" name="Enemy 1" x="1540" y="2920">
    <point/>
   </object>
   <object id="36" name="Limit 1_0" x="1120" y="2920">
    <point/>
   </object>
-  <object id="40" name="Limit 1_1" x="1119.6" y="1804.87">
+  <object id="40" name="Limit 1_1" x="1119.6" y="1804">
    <point/>
   </object>
-  <object id="41" name="Enemy 2" x="1578.33" y="1802.12">
+  <object id="41" name="Enemy 2" x="1540" y="1802">
    <point/>
   </object>
  </objectgroup>

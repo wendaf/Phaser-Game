@@ -12,7 +12,7 @@ export default class InstructionScene extends Phaser.Scene {
     }
 
     create() {
-        this.text = this.add.text(300, 100, 'Instructions', { fontSize: 40 });
+        this.text = this.add.text(260, 100, 'Instructions', { fontSize: 40 });
 
         const text = 'Lorem ipsum dolor sit amet, \n' +
             'consectetur adipiscing elit,\n' +

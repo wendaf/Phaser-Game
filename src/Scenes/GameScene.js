@@ -67,8 +67,6 @@ export default class GameScene extends Phaser.Scene {
             frameRate: 10,
         });
 
-
-
         // Enemy 1
         this.spawnEnemy1 = this.map.findObject("Objects", obj => obj.name === "Enemy 1");
         this.enemy1 = this.physics.add.sprite(this.spawnEnemy1.x, this.spawnEnemy1.y, 'enemy1');
@@ -123,7 +121,6 @@ export default class GameScene extends Phaser.Scene {
         });
         this.enemy2.anims.play('walk_enemie2', true); // play walk animation
 
-
         this.coinLayer.setTileIndexCallback(17, this.collectCoin, this);
         // when the player overlaps with a tile with index 17, collectCoin
         // will be called
@@ -137,7 +134,7 @@ export default class GameScene extends Phaser.Scene {
         this.cameras.main.startFollow(this.player);
 
         // set background color, so the sky is not black
-        //this.cameras.main.setBackgroundColor('#ccccff');
+        this.cameras.main.setBackgroundColor('#ccccff');
 
         // this text will show the score
         this.scoreText = this.add.text(20, 570, 'SCORE: ' + this.score, {
@@ -175,9 +172,15 @@ export default class GameScene extends Phaser.Scene {
 
         this.ESCKey = this.input.keyboard.addKey('ESC');
         this.ESCKey.on('down', function () {
-            this.scene.sleep();
-            this.scene.switch('OptionsScene');
-
+            this.isPaused = this.scene.isPaused('GameScene');
+            if (false === this.isPaused) {
+                this.cursors.left.reset();
+                this.cursors.right.reset();
+                this.cursors.up.reset();
+                this.cursors.down.reset();
+                this.scene.pause();
+                this.scene.launch('MenuScene');
+            }
         }, this);
 
     }
@@ -206,9 +209,7 @@ export default class GameScene extends Phaser.Scene {
         }
 
         // jump
-        // don't allow jump when player is in the air
-        // this.player.body.onFloor()
-        if (this.cursors.up.isDown && this.player.body.onFloor()) {
+        if (this.cursors.up.isDown && this.player.body.onFloor() || this.cursors.space.isDown && this.player.body.onFloor()) {
             this.player.body.setVelocityY(-500);
         }
 
