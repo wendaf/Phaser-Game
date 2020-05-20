@@ -187,6 +187,11 @@ export default class GameScene extends Phaser.Scene {
 
     // this function will be called when the player touches a coin
     collectCoin(sprite, tile) {
+        if(this.model.soundOn === true)
+        {
+            this.coinS = this.sound.add('coin', { volume: 1.0, loop: false });
+            this.coinS.play();
+        }
         this.coinLayer.removeTileAt(tile.x, tile.y); // remove the tile/coin
         this.score++// add 10 points to the score
         this.scoreText.setText('SCORE: ' + this.score); // set the text to show the current score
@@ -217,6 +222,7 @@ export default class GameScene extends Phaser.Scene {
 
         this.physics.collide(this.player, this.enemy2, this.lifeReduce, false, this);
 
+        if(this.player )
 
         if (this.life === 0) {
             this.end();

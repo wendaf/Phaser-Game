@@ -87,6 +87,7 @@ export default class PreloadScene extends Phaser.Scene {
         this.load.audio('gameMusic', ['assets/audio/game.mp3']);
         this.load.audio('lifeLost', ['assets/audio/life-lost.mp3']);
         this.load.audio('gameOver', ['assets/audio/game-over.mp3']);
+        this.load.audio('coin', ['assets/audio/coin.mp3']);
         // map made with Tiled in JSON format
         this.load.tilemapTiledJSON('map', 'assets/game/map.json');
         // tiles in spritesheet
