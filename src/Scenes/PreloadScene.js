@@ -6,7 +6,8 @@ export default class PreloadScene extends Phaser.Scene {
 
     preload() {
         // add logo image
-        this.add.image(400, 150, 'logo');
+        this.logo = this.add.image(400, 140, 'logo');
+        this.logo.setScale(0.7);
 
         // display progress bar
         const progressBar = this.add.graphics();
@@ -80,9 +81,12 @@ export default class PreloadScene extends Phaser.Scene {
         this.load.image('phaserLogo', 'assets/logo.png');
         this.load.image('box', 'assets/ui/grey_box.png');
         this.load.image('checkedBox', 'assets/ui/blue_boxCheckmark.png');
+        this.load.spritesheet('fullscreen', 'assets/ui/fullscreen.png', { frameWidth: 64, frameHeight: 64 });
         this.load.audio('bgMusic', ['assets/audio/music.mp3']);
         // audio game
         this.load.audio('gameMusic', ['assets/audio/game.mp3']);
+        this.load.audio('lifeLost', ['assets/audio/life-lost.mp3']);
+        this.load.audio('gameOver', ['assets/audio/game-over.mp3']);
         // map made with Tiled in JSON format
         this.load.tilemapTiledJSON('map', 'assets/game/map.json');
         // tiles in spritesheet

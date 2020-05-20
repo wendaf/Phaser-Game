@@ -9,7 +9,7 @@ export default class GameScene extends Phaser.Scene {
 
     init() {
         this.score = 0;
-        this.life = 5;
+        this.life = 100;
         this.sys.game.globals.bgMusic.stop();
         this.model = this.sys.game.globals.model;
         this.model.bgMusicPlaying = false;
@@ -53,33 +53,20 @@ export default class GameScene extends Phaser.Scene {
 
         this.physics.add.collider(this.groundLayer, this.player);
 
-
-        // Enemy 2
-        this.spawnEnemy2 = this.map.findObject("Objects", obj => obj.name === "Enemy 2");
-        this.enemy2 = this.physics.add.sprite(this.spawnEnemy2.x, this.spawnEnemy2.y, 'enemy1');
-        this.enemy2.setCollideWorldBounds(true);
-        this.enemy2.setScale(1.5);
-        this.physics.add.collider(this.groundLayer, this.enemy2);
-        this.enemy2X = this.map.findObject("Objects", obj => obj.name === "Limit 1_1");
-        this.tweens.add({
-            targets: this.enemy2,
-            props: {
-                x: this.enemy2X.x,
-            },
-            duration: 5000,
-            autoStart: true,
-            delay: 0,
-            repeat: -1,
-            yoyo: true,
-            flipX: true,
-        });
         this.anims.create({
-            key: 'walk_enemie2',
-            frames: this.anims.generateFrameNumbers('enemy1', { start: 4, end: 7 }),
+            key: 'walk',
+            frames: this.anims.generateFrameNames('player', { prefix: 'p1_walk', start: 1, end: 11, zeroPad: 2 }),
             frameRate: 10,
-            repeat: -1,
+            repeat: -1
         });
-        this.enemy2.anims.play('walk_enemie2', true); // play walk animation
+
+        // idle with only one frame, so repeat is not neaded
+        this.anims.create({
+            key: 'idle',
+            frames: [{ key: 'player', frame: 'p1_stand' }],
+            frameRate: 10,
+        });
+
 
 
         // Enemy 1
@@ -109,24 +96,38 @@ export default class GameScene extends Phaser.Scene {
         });
         this.enemy1.anims.play('walk_enemie1', true); // play walk animation
 
+        // Enemy 2
+        this.spawnEnemy2 = this.map.findObject("Objects", obj => obj.name === "Enemy 2");
+        this.enemy2 = this.physics.add.sprite(this.spawnEnemy2.x, this.spawnEnemy2.y, 'enemy1');
+        this.enemy2.setCollideWorldBounds(true);
+        this.enemy2.setScale(1.5);
+        this.physics.add.collider(this.groundLayer, this.enemy2);
+        this.enemy2X = this.map.findObject("Objects", obj => obj.name === "Limit 1_1");
+        this.tweens.add({
+            targets: this.enemy2,
+            props: {
+                x: this.enemy2X.x,
+            },
+            duration: 5000,
+            autoStart: true,
+            delay: 0,
+            repeat: -1,
+            yoyo: true,
+            flipX: true,
+        });
+        this.anims.create({
+            key: 'walk_enemie2',
+            frames: this.anims.generateFrameNumbers('enemy1', { start: 4, end: 7 }),
+            frameRate: 10,
+            repeat: -1,
+        });
+        this.enemy2.anims.play('walk_enemie2', true); // play walk animation
+
+
         this.coinLayer.setTileIndexCallback(17, this.collectCoin, this);
         // when the player overlaps with a tile with index 17, collectCoin
         // will be called
         this.physics.add.overlap(this.player, this.coinLayer);
-
-        this.anims.create({
-            key: 'walk',
-            frames: this.anims.generateFrameNames('player', { prefix: 'p1_walk', start: 1, end: 11, zeroPad: 2 }),
-            frameRate: 10,
-            repeat: -1
-        });
-
-        // idle with only one frame, so repeat is not neaded
-        this.anims.create({
-            key: 'idle',
-            frames: [{ key: 'player', frame: 'p1_stand' }],
-            frameRate: 10,
-        });
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -139,26 +140,53 @@ export default class GameScene extends Phaser.Scene {
         //this.cameras.main.setBackgroundColor('#ccccff');
 
         // this text will show the score
-        this.textS = this.add.text(20, 570, 'SCORE: ' + this.score, {
+        this.scoreText = this.add.text(20, 570, 'SCORE: ' + this.score, {
             fontSize: '22px',
             fill: '#ffffff'
         });
         // fix the text to the camera
-        this.textS.setScrollFactor(0);
+        this.scoreText.setScrollFactor(0);
         // this text will show the score
-        this.textL = this.add.text(20, 540, 'VIES: ' + this.life, {
+        this.lifeText = this.add.text(20, 540, 'VIES: ' + this.life+ ' %', {
             fontSize: '22px',
             fill: '#ffffff'
         });
         // fix the text to the camera
-        this.textL.setScrollFactor(0);
+        this.lifeText.setScrollFactor(0);
+
+        this.button = this.add.image(800-16, 16, 'fullscreen', 0).setOrigin(1, 0).setInteractive();
+        this.button.setScrollFactor(0);
+        this.button.on('pointerup', function () {
+
+            if (this.scale.isFullscreen)
+            {
+                this.button.setFrame(0);
+
+                this.scale.stopFullscreen();
+            }
+            else
+            {
+                this.button.setFrame(1);
+
+                this.scale.startFullscreen();
+            }
+
+        }, this);
+
+        this.ESCKey = this.input.keyboard.addKey('ESC');
+        this.ESCKey.on('down', function () {
+            this.scene.sleep();
+            this.scene.switch('OptionsScene');
+
+        }, this);
+
     }
 
     // this function will be called when the player touches a coin
     collectCoin(sprite, tile) {
         this.coinLayer.removeTileAt(tile.x, tile.y); // remove the tile/coin
         this.score++// add 10 points to the score
-        this.textS.setText('SCORE: ' + this.score); // set the text to show the current score
+        this.scoreText.setText('SCORE: ' + this.score); // set the text to show the current score
         return false;
     }
 
@@ -178,7 +206,9 @@ export default class GameScene extends Phaser.Scene {
         }
 
         // jump
-        if (this.cursors.up.isDown) {
+        // don't allow jump when player is in the air
+        // this.player.body.onFloor()
+        if (this.cursors.up.isDown && this.player.body.onFloor()) {
             this.player.body.setVelocityY(-500);
         }
 
@@ -190,26 +220,28 @@ export default class GameScene extends Phaser.Scene {
         if (this.life === 0) {
             this.end();
         }
+
     }
 
     lifeReduce() {
-        this.life -= 1;
-        this.textL.setText('VIES: ' + this.life);
+        this.life -= 25;
+        this.lifeText.setText('VIES: ' + this.life+ ' %');
 
         if (this.player.x >= this.enemy1.x || this.player.x >= this.enemy2.x) {
             this.player.x += 75;
         } else {
             this.player.x -= 75;
         }
+        if(this.model.soundOn === true)
+        {
+            this.lifeLostS = this.sound.add('lifeLost', { volume: 1.0, loop: false });
+            this.lifeLostS.play();
+        }
     }
 
 
     end() {
-
-        // Restart the scene
-        this.registry.destroy();
-        this.events.off();
-        this.scene.restart();
+        this.scene.start('EndScene');
     }
 
 }
