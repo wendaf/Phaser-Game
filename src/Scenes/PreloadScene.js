@@ -102,6 +102,8 @@ export default class PreloadScene extends Phaser.Scene {
         this.load.spritesheet("enemy1", 'assets/game/enemy1/slime.png', {frameWidth: 32, frameHeight: 32});
         // enemy 2
         this.load.spritesheet("enemy2", 'assets/game/enemy2/slime.png', {frameWidth: 112, frameHeight: 68});
+        // enemy 3
+        this.load.spritesheet("enemy3", 'assets/game/enemy3/bee.png', {frameWidth: 128, frameHeight: 100});
     }
 
     ready() {

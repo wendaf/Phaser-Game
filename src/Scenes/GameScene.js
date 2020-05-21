@@ -123,6 +123,35 @@ export default class GameScene extends Phaser.Scene {
         });
         this.enemy2.anims.play('walk_enemie2', true); // play walk animation
 
+        // Enemy 3
+        this.spawnEnemy3 = this.map.findObject("Objects", obj => obj.name === "Enemy 2");
+        this.enemy3 = this.physics.add.sprite(this.spawnEnemy2.x, this.spawnEnemy2.y, 'enemy3');
+        this.enemy3.setCollideWorldBounds(true);
+        this.enemy3.setOrigin(0.5, 1);
+        this.enemy3.setScale(1);
+        this.enemy3.body.setSize(80, 135);
+        this.physics.add.collider(this.groundLayer, this.enemy3);
+        this.enemy3X = this.map.findObject("Objects", obj => obj.name === "Limit 1_1");
+        this.tweens.add({
+            targets: this.enemy3,
+            props: {
+                x: this.enemy3X.x,
+            },
+            duration: 5000,
+            autoStart: true,
+            delay: 0,
+            repeat: -1,
+            yoyo: true,
+            flipX: true,
+        });
+        this.anims.create({
+            key: 'fly_enemie3',
+            frames: this.anims.generateFrameNumbers('enemy3', { start: 0, end: 1 }),
+            frameRate: 8,
+            repeat: -1,
+        });
+        this.enemy3.anims.play('fly_enemie3', true); // play walk animation
+
         this.coinLayer.setTileIndexCallback(17, this.collectCoin, this);
         // when the player overlaps with a tile with index 17, collectCoin
         // will be called
@@ -137,6 +166,8 @@ export default class GameScene extends Phaser.Scene {
 
         // set background color, so the sky is not black
         this.cameras.main.setBackgroundColor('#ccccff');
+
+        this.camera = this.cameras.add(10, 5, 200, 100).setZoom(0.2).setName('mini').setBackgroundColor("#ccccff").setAlpha(0.75);
 
         // this text will show the score
         this.scoreText = this.add.text(20, 570, 'SCORE: ' + this.score, {
@@ -217,11 +248,13 @@ export default class GameScene extends Phaser.Scene {
         }
 
         // jump
-        // if (this.cursors.up.isDown && this.player.body.onFloor() || this.cursors.space.isDown && this.player.body.onFloor()) {
-        if (this.cursors.up.isDown || this.cursors.space.isDown) {
+        if (this.cursors.up.isDown && this.player.body.onFloor() || this.cursors.space.isDown && this.player.body.onFloor()) {
+        // if (this.cursors.up.isDown || this.cursors.space.isDown) {
 
             this.player.body.setVelocityY(-500);
         }
+        this.camera.scrollX = this.player.x;
+        this.camera.scrollY = this.player.y;
 
         this.physics.collide(this.player, this.enemy1, this.lifeReduce, false, this);
 
