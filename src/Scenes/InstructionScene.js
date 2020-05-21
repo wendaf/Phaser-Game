@@ -22,7 +22,6 @@ export default class InstructionScene extends Phaser.Scene {
 
         this.startText = this.add.text(250, 190 , text, { fontSize: 20 });
 
-
         // Add go back button to title screen
         this.menuButton = new Button(this, 400, 500, 'blueButton1', 'blueButton2', 'Menu', 'TitleScene');
 

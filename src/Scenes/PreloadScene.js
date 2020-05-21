@@ -94,10 +94,14 @@ export default class PreloadScene extends Phaser.Scene {
         this.load.spritesheet('tiles', 'assets/game/tiles.png', {frameWidth: 70, frameHeight: 70});
         // simple coin image
         this.load.image('coin', 'assets/game/coinGold.png');
+        // background image
+        this.load.image('background', 'assets/background.png');
         // player animations
         this.load.atlas('player', 'assets/game/player.png', 'assets/game/player.json');
         // enemy 1
         this.load.spritesheet("enemy1", 'assets/game/enemy1/slime.png', {frameWidth: 32, frameHeight: 32});
+        // enemy 2
+        this.load.spritesheet("enemy2", 'assets/game/enemy2/slime.png', {frameWidth: 112, frameHeight: 68});
     }
 
     ready() {

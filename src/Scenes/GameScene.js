@@ -4,8 +4,7 @@ export default class GameScene extends Phaser.Scene {
         super("GameScene");
     }
 
-    preload() {
-    }
+    preload() {}
 
     init() {
         this.score = 0;
@@ -53,6 +52,7 @@ export default class GameScene extends Phaser.Scene {
 
         this.physics.add.collider(this.groundLayer, this.player);
 
+
         this.anims.create({
             key: 'walk',
             frames: this.anims.generateFrameNames('player', { prefix: 'p1_walk', start: 1, end: 11, zeroPad: 2 }),
@@ -96,9 +96,11 @@ export default class GameScene extends Phaser.Scene {
 
         // Enemy 2
         this.spawnEnemy2 = this.map.findObject("Objects", obj => obj.name === "Enemy 2");
-        this.enemy2 = this.physics.add.sprite(this.spawnEnemy2.x, this.spawnEnemy2.y, 'enemy1');
+        this.enemy2 = this.physics.add.sprite(this.spawnEnemy2.x, this.spawnEnemy2.y, 'enemy2');
         this.enemy2.setCollideWorldBounds(true);
-        this.enemy2.setScale(1.5);
+        this.enemy2.setOrigin(0.5, 1);
+        this.enemy2.setScale(1);
+        this.enemy2.body.setSize(this.width - 40, this.height - 20)
         this.physics.add.collider(this.groundLayer, this.enemy2);
         this.enemy2X = this.map.findObject("Objects", obj => obj.name === "Limit 1_1");
         this.tweens.add({
@@ -115,8 +117,8 @@ export default class GameScene extends Phaser.Scene {
         });
         this.anims.create({
             key: 'walk_enemie2',
-            frames: this.anims.generateFrameNumbers('enemy1', { start: 4, end: 7 }),
-            frameRate: 10,
+            frames: this.anims.generateFrameNumbers('enemy2', { start: 0, end: 4 }),
+            frameRate: 6,
             repeat: -1,
         });
         this.enemy2.anims.play('walk_enemie2', true); // play walk animation
@@ -143,7 +145,8 @@ export default class GameScene extends Phaser.Scene {
         });
         // fix the text to the camera
         this.scoreText.setScrollFactor(0);
-        // this text will show the score
+
+        // this text will show the life
         this.lifeText = this.add.text(20, 540, 'VIES: ' + this.life+ ' %', {
             fontSize: '22px',
             fill: '#ffffff'
@@ -214,15 +217,15 @@ export default class GameScene extends Phaser.Scene {
         }
 
         // jump
-        if (this.cursors.up.isDown && this.player.body.onFloor() || this.cursors.space.isDown && this.player.body.onFloor()) {
+        // if (this.cursors.up.isDown && this.player.body.onFloor() || this.cursors.space.isDown && this.player.body.onFloor()) {
+        if (this.cursors.up.isDown || this.cursors.space.isDown) {
+
             this.player.body.setVelocityY(-500);
         }
 
         this.physics.collide(this.player, this.enemy1, this.lifeReduce, false, this);
 
         this.physics.collide(this.player, this.enemy2, this.lifeReduce, false, this);
-
-        if(this.player )
 
         if (this.life === 0) {
             this.end();

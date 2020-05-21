@@ -16,7 +16,6 @@ export default class GameScene extends Phaser.Scene {
 
         this.ESCKey = this.input.keyboard.addKey('ESC');
         this.ESCKey.on('down',  function () {
-            console.log("ESC pressed");
             this.isPaused = this.scene.isPaused('GameScene');
             if (true === this.isPaused) {
                 this.scene.stop();
