@@ -167,7 +167,7 @@ export default class GameScene extends Phaser.Scene {
         // set background color, so the sky is not black
         this.cameras.main.setBackgroundColor('#ccccff');
 
-        this.camera = this.cameras.add(10, 5, 200, 100).setZoom(0.2).setName('mini').setBackgroundColor("#ccccff").setAlpha(0.75);
+        this.camera = this.cameras.add(10, 5, 200, 100).setZoom(1 / 6).setName('mini').setBackgroundColor("#ccccff").setAlpha(0.75);
 
         // this text will show the score
         this.scoreText = this.add.text(20, 570, 'SCORE: ' + this.score, {
@@ -269,6 +269,7 @@ export default class GameScene extends Phaser.Scene {
     lifeReduce() {
         this.life -= 25;
         this.lifeText.setText('VIES: ' + this.life+ ' %');
+        this.cameras.main.shake(500, 0.025);
 
         if (this.player.x >= this.enemy1.x || this.player.x >= this.enemy2.x) {
             this.player.x += 75;
