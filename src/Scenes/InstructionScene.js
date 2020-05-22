@@ -10,13 +10,12 @@ export default class InstructionScene extends Phaser.Scene {
     create() {
         this.text = this.add.text(260, 100, 'Instructions', { fontSize: 40 });
 
-        const text = 'Lorem ipsum dolor sit amet, \n' +
-            'consectetur adipiscing elit,\n' +
-            'sed do eiusmod tempor incididunt ut labore \n' +
-            'et dolore magna aliqua. \n' +
-            'fugiat nulla pariatur.';
+        const text = 'Récupérer un maximum de pièces tout en \n' +
+            'atteignant la porte située à la \n' +
+            'fin de la carte sans se faire tuer \n' +
+            'par les ennemies.';
 
-        this.startText = this.add.text(250, 190 , text, { fontSize: 20 });
+        this.startText = this.add.text(250, 190, text, { fontSize: 20 });
 
         // Add go back button to title screen
         this.menuButton = new Button(this, 400, 500, 'blueButton1', 'blueButton2', 'Menu', 'TitleScene');
