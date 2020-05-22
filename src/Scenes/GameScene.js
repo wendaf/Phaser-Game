@@ -169,7 +169,7 @@ export default class GameScene extends Phaser.Scene {
         this.cameras.main.startFollow(this.player);
 
         // set background color, so the sky is not black
-        this.cameras.main.setBackgroundColor('#ccccff');
+        this.cameras.main.setBackgroundColor('#b3b3e0');
 
         this.camera = this.cameras.add(10, 5, 200, 100).setZoom(1 / 6).setName('mini').setBackgroundColor("#ccccff").setAlpha(0.75);
 
@@ -265,11 +265,11 @@ export default class GameScene extends Phaser.Scene {
 
         this.physics.collide(this.player, this.enemy3, this.lifeReduce, false, this);
 
+        this.physics.collide(this.player, this.goal, this.finish, false, this);
+
         if (this.life === 0) {
             this.end();
         }
-
-        this.physics.collide(this.player, this.goal, this.finish, false, this);
 
     }
 
@@ -290,8 +290,7 @@ export default class GameScene extends Phaser.Scene {
         }
     }
 
-    finish()
-    {
+    finish() {
         this.scene.start("WinScene");
     }
 

@@ -7,9 +7,7 @@ export default class TitleScene extends Phaser.Scene {
         super("TitleScene");
     }
 
-    preload() {
-
-    }
+    preload() {}
 
     create() {
         // Game
