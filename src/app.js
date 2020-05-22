@@ -7,6 +7,7 @@ import OptionsScene from '/src/Scenes/OptionsScene.js';
 import GameScene from '/src/Scenes/GameScene.js';
 import MenuScene from "./Scenes/MenuScene.js";
 import EndScene from '/src/Scenes/EndScene.js';
+import WinScene from "./Scenes/WinScene.js";
 import Model from '/src/Model.js';
 import Credits from "/src/Scenes/CreditsScene.js";
 
@@ -19,6 +20,7 @@ const optionsScene = new OptionsScene();
 const gameScene = new GameScene();
 const menuScene = new MenuScene()
 const endScene = new EndScene();
+const winScene = new WinScene();
 const model = new Model();
 const credits = new Credits();
 
@@ -36,6 +38,7 @@ game.scene.add('OptionsScene', optionsScene);
 game.scene.add("GameScene", gameScene);
 game.scene.add("MenuScene", menuScene);
 game.scene.add("EndScene", endScene);
+game.scene.add("WinScene" , winScene);
 game.scene.add("CreditsScene", credits);
 
 // start title

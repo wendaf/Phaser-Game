@@ -7,10 +7,6 @@ export default class InstructionScene extends Phaser.Scene {
         super("InstructionScene");
     }
 
-    preload() {
-
-    }
-
     create() {
         this.text = this.add.text(260, 100, 'Instructions', { fontSize: 40 });
 

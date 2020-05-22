@@ -88,6 +88,7 @@ export default class PreloadScene extends Phaser.Scene {
         this.load.audio('lifeLost', ['assets/audio/life-lost.mp3']);
         this.load.audio('gameOver', ['assets/audio/game-over.mp3']);
         this.load.audio('coin', ['assets/audio/coin.mp3']);
+        this.load.audio('win', ['assets/audio/win.mp3']);
         // map made with Tiled in JSON format
         this.load.tilemapTiledJSON('map', 'assets/game/map.json');
         // tiles in spritesheet
@@ -104,6 +105,8 @@ export default class PreloadScene extends Phaser.Scene {
         this.load.spritesheet("enemy2", 'assets/game/enemy2/slime.png', {frameWidth: 112, frameHeight: 68});
         // enemy 3
         this.load.spritesheet("enemy3", 'assets/game/enemy3/bee.png', {frameWidth: 128, frameHeight: 100});
+        // goal
+        this.load.image("goal", 'assets/game/goal.png');
     }
 
     ready() {

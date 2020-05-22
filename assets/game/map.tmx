@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="25" height="75" tilewidth="70" tileheight="70" infinite="0" backgroundcolor="#797979" nextlayerid="8" nextobjectid="44">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="25" height="75" tilewidth="70" tileheight="70" infinite="0" backgroundcolor="#797979" nextlayerid="8" nextobjectid="45">
  <editorsettings>
   <export target="map.json" format="json"/>
  </editorsettings>
@@ -169,10 +169,13 @@
   <object id="41" name="Enemy 2" x="1540" y="1802">
    <point/>
   </object>
-  <object id="42" name="Limit 1_2" x="958.711" y="255.895">
+  <object id="42" name="Limit 1_2" x="977.71" y="255.9">
    <point/>
   </object>
   <object id="43" name="Enemy 3" x="1379.11" y="253.895">
+   <point/>
+  </object>
+  <object id="44" name="Goal" x="1679.82" y="200.45">
    <point/>
   </object>
  </objectgroup>

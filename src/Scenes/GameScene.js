@@ -37,6 +37,11 @@ export default class GameScene extends Phaser.Scene {
         // add coins as tiles
         this.coinLayer = this.map.createDynamicLayer('Coins', coinTiles, 0, 0);
 
+        this.goalCoord = this.map.findObject("Objects", obj => obj.name === "Goal");
+        this.goal = this.add.image(this.goalCoord.x, this.goalCoord.y, 'goal');
+        this.physics.add.existing(this.goal);
+        this.physics.add.collider(this.groundLayer, this.goal);
+
         // set the boundaries of our game world
         this.physics.world.bounds.width = this.groundLayer.width;
         this.physics.world.bounds.height = this.groundLayer.height;
@@ -51,7 +56,6 @@ export default class GameScene extends Phaser.Scene {
         this.player.body.setSize(this.player.width, this.player.height - 8);
 
         this.physics.add.collider(this.groundLayer, this.player);
-
 
         this.anims.create({
             key: 'walk',
@@ -124,14 +128,14 @@ export default class GameScene extends Phaser.Scene {
         this.enemy2.anims.play('walk_enemie2', true); // play walk animation
 
         // Enemy 3
-        this.spawnEnemy3 = this.map.findObject("Objects", obj => obj.name === "Enemy 2");
-        this.enemy3 = this.physics.add.sprite(this.spawnEnemy2.x, this.spawnEnemy2.y, 'enemy3');
+        this.spawnEnemy3 = this.map.findObject("Objects", obj => obj.name === "Enemy 3");
+        this.enemy3 = this.physics.add.sprite(this.spawnEnemy3.x, this.spawnEnemy3.y, 'enemy3');
         this.enemy3.setCollideWorldBounds(true);
         this.enemy3.setOrigin(0.5, 1);
         this.enemy3.setScale(1);
         this.enemy3.body.setSize(80, 135);
         this.physics.add.collider(this.groundLayer, this.enemy3);
-        this.enemy3X = this.map.findObject("Objects", obj => obj.name === "Limit 1_1");
+        this.enemy3X = this.map.findObject("Objects", obj => obj.name === "Limit 1_2");
         this.tweens.add({
             targets: this.enemy3,
             props: {
@@ -249,7 +253,6 @@ export default class GameScene extends Phaser.Scene {
 
         // jump
         if (this.cursors.up.isDown && this.player.body.onFloor() || this.cursors.space.isDown && this.player.body.onFloor()) {
-        // if (this.cursors.up.isDown || this.cursors.space.isDown) {
 
             this.player.body.setVelocityY(-500);
         }
@@ -260,9 +263,13 @@ export default class GameScene extends Phaser.Scene {
 
         this.physics.collide(this.player, this.enemy2, this.lifeReduce, false, this);
 
+        this.physics.collide(this.player, this.enemy3, this.lifeReduce, false, this);
+
         if (this.life === 0) {
             this.end();
         }
+
+        this.physics.collide(this.player, this.goal, this.finish, false, this);
 
     }
 
@@ -283,6 +290,10 @@ export default class GameScene extends Phaser.Scene {
         }
     }
 
+    finish()
+    {
+        this.scene.start("WinScene");
+    }
 
     end() {
         this.scene.start('EndScene');
